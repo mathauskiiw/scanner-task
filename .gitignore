@@ -1,0 +1,8 @@
+__pycache__/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/
+.mypy_cache/
+.*.env
+cookies/
+user_base.json
