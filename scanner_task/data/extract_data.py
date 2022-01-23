@@ -23,7 +23,7 @@ from scanner_task.common.constants import PAGE_SOURCE_PATH
 from scanner_task.common.constants import RESULT_PATH
 
 
-def page_source_to_file(driver: WebDriver, filename):
+def page_source_to_file(driver: WebDriver, filename) -> None:
     """
     Gets page source from the driver and saves it to a file in PAGE_SOURCE_PATH
     """
@@ -127,7 +127,6 @@ def extract_freelancer_data(user_div: Tag) -> Freelancer:
     }
     freelancer = Freelancer(**result)
 
-    # print(freelancer.dict())
     return freelancer
 
 
@@ -155,6 +154,7 @@ def process_contact_info(main_div: Tag) -> Contact:
     """
     result: List[dict] = [{}, {}]
 
+    # saves contact info to result[0], and address info to result[1]
     for idx, lookup in enumerate([CONTACT_INFO_LOOKUP, ADDRESS_INFO_LOOKUP]):
         for key, tag, value in lookup:
             if div_found := main_div.find(tag, attrs={'data-test': value}):
@@ -188,8 +188,11 @@ def contact_page_extract(html_page: str = '') -> Contact:
     return process_contact_info(main)
 
 
-async def parse_file(filepath: str):
-    # route function
+async def parse_file(filepath: str) -> None:
+    """
+    Routes extract fuction between diferent categories of files and write the results to <RESULT_PATH>
+    :param path to a .html file
+    """
     async with aiopen(filepath, 'r') as aiof:
         content = await aiof.read()
 
@@ -211,7 +214,7 @@ async def parse_file(filepath: str):
             await aiof.write('\n')
 
 
-async def parse_all_files(filedir: str):
+async def parse_all_files(filedir: str) -> None:
     filepaths = Path(filedir).glob('*.html')
 
     tasks = []
