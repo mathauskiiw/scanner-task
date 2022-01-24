@@ -42,7 +42,5 @@ RUN /usr/local/bin/python -m pip install poetry
 # Install all dependencies
 RUN poetry install
 
-# Install missing typestubs
-RUN poetry run mypy --install-types --non-interactive
 
 ENTRYPOINT ["/home/cr4wler/scanner_task/entry.sh"]
