@@ -4,14 +4,12 @@ import re
 import os
 from pathlib import Path
 from typing import List, Optional, Union
-
 # external
 import asyncio
 from aiofiles import open as aiopen
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 from selenium.webdriver.chrome.webdriver import WebDriver
-
 # project
 from scanner_task.common.utils import adjust_spacing, trim_text
 from scanner_task.common.classes import Freelancer, Contact, Address
@@ -19,7 +17,6 @@ from scanner_task.common.constants import PERCENTAGE_REGEX
 from scanner_task.common.constants import PAYMENT_PRICE_REGEX
 from scanner_task.common.constants import CONTACT_INFO_LOOKUP
 from scanner_task.common.constants import ADDRESS_INFO_LOOKUP
-from scanner_task.common.constants import PAGE_SOURCE_PATH
 from scanner_task.common.constants import RESULT_PATH
 
 
@@ -29,7 +26,7 @@ def page_source_to_file(driver: WebDriver, filename) -> None:
     """
     content = driver.page_source
 
-    with open(os.path.join(PAGE_SOURCE_PATH, filename), 'w') as fp:
+    with open(filename, 'w') as fp:
         fp.write(content)
 
 
@@ -214,7 +211,7 @@ async def parse_file(filepath: str) -> None:
             await aiof.write('\n')
 
 
-async def parse_all_files(filedir: str) -> None:
+async def parse_all_files(filedir: str) -> List:
     filepaths = Path(filedir).glob('*.html')
 
     tasks = []

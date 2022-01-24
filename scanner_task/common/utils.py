@@ -60,7 +60,6 @@ def retry_n_times(driver: WebDriver, fn: Callable, n: int = 3) -> None:
     """
     for i in range(n):
         if not fn(driver):
-            print("the called function didn't need to take any action")
             return
         else:
             WebDriverWait(2)
@@ -78,6 +77,7 @@ def file_suffix(n: int = 4) -> str:
 
 def generate_new_filename(basename: str) -> str:
     """
+    Generate filenames avoiding overwriting existing ones
     """
     name, ext = basename.split('.')
     filename = f"{name}_{file_suffix()}.{ext}"

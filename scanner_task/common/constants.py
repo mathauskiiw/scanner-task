@@ -9,7 +9,7 @@ PAGE_SOURCE_PATH = 'scanner_task/resources/page_sources/'
 RESULT_PATH = 'scanner_task/resources/outputs/'
 WEBDRIVER_PATH = 'scanner_task/resources/chromedriver/chromedriver'
 
-# Regex
+# Regexes
 PAYMENT_PRICE_REGEX = r'\d+(\.\d+)?'
 PERCENTAGE_REGEX = r'(\d+(\.\d+)?%)'
 

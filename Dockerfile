@@ -19,9 +19,6 @@ ENV APP_HOME=/home/cr4wler/scanner_task
 # Change the workdir
 WORKDIR $APP_HOME
 
-# # Copy the dependencies file.
-# COPY ./pyproject.toml $APP_HOME
-
 # Copy the code.
 COPY . $APP_HOME
 

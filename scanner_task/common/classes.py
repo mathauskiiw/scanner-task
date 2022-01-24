@@ -1,6 +1,8 @@
 # classes.py
-from pydantic import BaseModel
+# python
 from typing import Optional, Dict, List
+# external
+from pydantic import BaseModel
 
 
 class Freelancer(BaseModel):

@@ -1,20 +1,18 @@
 # base.py
-# project
-from scanner_task.common.utils import get_params_page, retry_n_times
-from scanner_task.common.classes import User
-from scanner_task.navigation.auth import check_auth_category
-
 # python
 import logging
 from time import sleep
 from typing import List
-
 # external
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotInteractableException
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotInteractableException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+# project
+from scanner_task.common.utils import get_params_page, retry_n_times
+from scanner_task.common.classes import User
+from scanner_task.navigation.auth import check_auth_category
 
 
 def scroll_to_bottom(driver):
@@ -107,13 +105,14 @@ def go_to_profile_page(driver: WebDriver, user: User) -> bool:
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable(
         (By.XPATH, '//*[@id="nav-right"]/ul/li[9]/ul/li[3]/ul/li[1]/a'))).click()
 
-    while auth_fn := check_auth_category(driver):
+    while auth_fn_id := check_auth_category(driver):
+        print(auth_fn_id)
         try:
-            auth_fn(driver, user)
+            auth_fn_id[0](driver, user, auth_fn_id[1])
+            sleep(1)
         except Exception as e:
-            err_msg = f"Couldn't authenticate user: {user.username} using {auth_fn} | error: {e}"
+            err_msg = f"Couldn't authenticate user: {user.username} using {auth_fn_id[0]} | error: {e}"
             logging.exception(err_msg)
-            raise Exception(err_msg)
 
     retry_n_times(driver, handle_page_errors)
 

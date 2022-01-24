@@ -2,13 +2,11 @@
 # python
 import os
 from shutil import rmtree
-
 # external
 # from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium_stealth import stealth
 import undetected_chromedriver as uc
-
 # project
 from scanner_task.common.constants import COOKIES_PATH
 

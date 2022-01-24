@@ -3,10 +3,8 @@
 # python
 import logging
 from time import sleep
-
 # external
 import asyncio
-
 # project
 from scanner_task.bypassing.cursor_movement import start_cursor_thread, kill_task
 from scanner_task.common.utils import generate_new_filename
@@ -18,14 +16,17 @@ from scanner_task.navigation.setup import setup_webdriver
 from scanner_task.navigation.base import go_to_freelancers_page, go_to_profile_page
 
 
-def run():
+def run(headless: bool):
     """
     Main execution flow, writing results to a file
     """
     logging.info('Scanner running...')
-    driver = setup_webdriver()
-    user_credentials = load_credentials()
-    user = user_credentials[0]
+    driver = setup_webdriver(headless)
+
+    if user_credentials := load_credentials():
+        user = user_credentials[1]
+    else:
+        raise Exception('Unable to load user credentials from file --> scanner_task/resources/user_base.json')
 
     # get page sources using selenium
     try:
@@ -36,7 +37,7 @@ def run():
 
         try:
             go_to_freelancers_page(driver)
-            sleep(3)
+            sleep(6)
         except Exception as e:
             raise e
         else:
@@ -44,14 +45,14 @@ def run():
 
         try:
             go_to_profile_page(driver, user)
-            sleep(3)
+            sleep(4)
         except Exception as e:
             raise e
         else:
             page_source_to_file(driver, generate_new_filename('contact_page.html'))
 
         kill_task(cursor_movement)
-    except Exception as e:
+    except FileNotFoundError as e:
         logging.exception(e)
     finally:
         driver.close()
