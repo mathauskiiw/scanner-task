@@ -31,10 +31,10 @@ def run(headless: bool):
     # get page sources using selenium
     try:
         # IMPORTANT pause execution here and set the network request block on the browser to 'www.upwork.com/Ss13U803*'
-        cursor_movement = start_cursor_thread()
+        if not headless:
+            cursor_movement = start_cursor_thread()
 
         authenticate(driver, user)
-
         try:
             go_to_freelancers_page(driver)
             sleep(6)
@@ -51,7 +51,8 @@ def run(headless: bool):
         else:
             page_source_to_file(driver, generate_new_filename('contact_page.html'))
 
-        kill_task(cursor_movement)
+        if not headless:
+            kill_task(cursor_movement)
     except FileNotFoundError as e:
         logging.exception(e)
     finally:
