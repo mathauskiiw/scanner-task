@@ -1,30 +1,25 @@
 # setup_webdriver.py
-
-# project
-# from scanner_task.common.constants import WEBDRIVER_PATH
-
 # python
 import os
 from shutil import rmtree
 
 # external
+# from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.webdriver.chrome.webdriver import WebDriver
-# from selenium.webdriver import ChromeOptions
 from selenium_stealth import stealth
-# from seleniumrequests import Chrome
 import undetected_chromedriver as uc
 
-# from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-# from selenium.webdriver.common.proxy import Proxy, ProxyType
+# project
+from scanner_task.common.constants import COOKIES_PATH
 
 
-def setup_webdriver() -> WebDriver:
+def setup_webdriver(headless: bool = False) -> WebDriver:
     """
     Instantiate the webdriver and add stealth options
     """
     # avoids user staying logged in if not on incognito mode
-    if os.path.exists('cookies/'):
-        rmtree('cookies/')
+    if os.path.exists(COOKIES_PATH):
+        rmtree(COOKIES_PATH)
 
     options = uc.ChromeOptions()
     # Those options aren't compatible with undetected_chromedriver
@@ -41,14 +36,13 @@ def setup_webdriver() -> WebDriver:
     options.add_argument('--start-maximized')
     options.add_argument('--disable-infobars')
     options.add_argument('--window-size=1700,1100')
-    options.add_argument(r'--user-data-dir=./cookies')
+    options.add_argument(f'--user-data-dir={COOKIES_PATH}')
 
     # uncomment when instantiating a local proxy
     # proxy_addr = "http://127.0.0.1:8899"
     # options.add_argument(f"--proxy-server={proxy_addr}")
 
-    # driver = Chrome(options=options, executable_path=WEBDRIVER_PATH)
-    driver = uc.Chrome(options=options, browser_executable_path='/usr/bin/google-chrome-stable')
+    driver = uc.Chrome(options=options, headless=headless)
 
     stealth(
         driver,

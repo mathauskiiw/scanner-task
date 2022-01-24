@@ -1,6 +1,7 @@
 # __main.py__
 # python
 import logging
+import sys
 
 # project
 from scanner_task import app
@@ -14,4 +15,5 @@ if __name__ == '__main__':
         datefmt='%Y-%m-%d %H:%M:%S',
         level=logging.INFO
     )
-    app.run()
+    headless = True if "--headless" in sys.argv else False
+    app.run(headless)

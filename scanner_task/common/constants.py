@@ -1,6 +1,7 @@
 # constants.py
 # Paths
 CHROME_PATH = '/usr/bin/google-chrome-stable'
+COOKIES_PATH = 'cookies/'
 CREDENTIALS_FILEPATH = 'scanner_task/resources/user_base.json'
 LOG_PATH = 'scanner.log'
 LOGIN_URL = 'http://www.upwork.com/ab/account-security/login'
