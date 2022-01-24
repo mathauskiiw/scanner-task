@@ -11,7 +11,7 @@ Scanner task
     **DISCLAIMER:** as I describe further, I wasn't able to bypass the captcha in a headless manner. Therefore, the existing Dockerfile does work, but script stops in the login page itself.
 
 How it works:
-    - The script reads the first user from a .json, that needs to be present in scanner_task/resources/
+    - The script reads the first user from the user_base.json, that needs to be present in scanner_task/resources/
         ``
         [{
         "username": "\***",
