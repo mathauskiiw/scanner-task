@@ -1,3 +1,56 @@
+Scanner task
+    This application was made to extract freelancer and contact info from upwork website
+
+    The most relevant libraries used were:
+        - Selenium, for navigation
+        - BeautifulSoup4, for parsing html sources
+        - AsyncIO and aiofiles, for asynchronous file reading/writing
+        - Poetry, for dependency management
+        - Pydantic, for typing/serializing classes
+
+    **DISCLAIMER:** as I describe further, I wasn't able to bypass the captcha in a headless manner. Therefore, the existing Dockerfile does work, but script stops in the login page itself.
+
+How it works:
+    - The script reads the first user from a .json, that needs to be present in scanner_task/resources/
+        ``
+        [{
+        "username": "\***",
+        "password": "\***",
+        "secret_answer": "\***",
+        "authenticator_key": "\**** \**** \**** \****"
+        }]
+        ``
+
+    - Then it authenticates, and try to go to the freelancers first page and to the contact info page after that
+
+    - Both page sources are saved in scanner_task/resources/page_sources/<page_source_****.html>
+
+    - The the script starts an asynchronous event loop to parse those files with the given rules for each type of content, saving the output to canner_task/resources/page_sources/<typeofcontent.txt>
+
+    - The freelancer and the contact info are taken as pydantic model, so they're serializable.
+
+Running
+    - installing dependencies:
+        ``$ $PYTHON -m pip install poetry``
+        ``$ poetry install``
+
+    - aiofiles has no typestubs, install it:
+        ``$ poetry run python -m pip install types-aiofiles``
+
+    - mypy checks:
+        ``$ poetry run mypy . --ignore-missing-imports``
+
+    - script should be run as a module:
+        ``$ $PYTHON -m scanner_task [--headless]``
+
+    - **Docker** (run mypy tests automatically)
+        Build:
+        ``docker build -t scanner .``
+
+        Run:
+        ``docker run scanner``
+
+
 Anti-captcha approaches:
     scanner_task/bypassing/cursor_movement.py
 
@@ -41,7 +94,3 @@ Anti-captcha approaches:
 
 
 The Evil entity - https://www.upwork.com/Ss13U803/init.js
-
-
-
-
